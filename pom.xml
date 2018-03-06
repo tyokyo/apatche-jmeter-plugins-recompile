@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>kg.apc</groupId>
 	<artifactId>ApatcheJMeter_ckt2</artifactId>
-	<version>0.1</version>
-
-	<name>JSON Plugins</name>
-	<description>JSON Plugins</description>
+	<version>0.3</version>
+	<name>apatche jmeter extend plugins</name>
+	<description>Evelyn Plugins</description>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -28,7 +27,6 @@
 			<email>jmeter-plugins@googlegroups.com</email>
 		</developer>
 	</developers>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -42,6 +40,33 @@
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<property name="JMETER_HOME" value="env.JMETER_HOME" />
+								<property name="target_file" value="ApatcheJMeter_ckt-0.3.jar" />
+								<property name="from" value="target/${target_file}" />
+								<property name="to" value="${JMETER_HOME}/lib/ext" />
+								<echo message="copy file from ${from} to ${to}" />
+								<!-- <delete file="${servicemix_path}/${target_file}"></delete> -->
+								<copy file="${from}" todir="${to}/" />
+								<!-- <copy file="${from}" todir="\\192.168.153.136\jmeter\lib\ext\" 
+									/> -->
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -51,6 +76,14 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
 	<dependencies>
+		<!--
+		mvn install:install-file -DgroupId=jdk.tools -DartifactId=jdk.tools -Dpackaging=jar -Dversion=1.8 -Dfile=tools.jar -DgeneratePom=true
+		  -->
+		<dependency>
+			<groupId>jdk.tools</groupId>
+			<artifactId>jdk.tools</artifactId>
+			<version>1.8</version>
+		</dependency>
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
@@ -166,6 +199,5 @@
 			<artifactId>qpid-client</artifactId>
 			<version>6.3.0</version>
 		</dependency>
-
 	</dependencies>
 </project>
